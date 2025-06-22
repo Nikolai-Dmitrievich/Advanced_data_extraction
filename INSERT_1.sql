@@ -115,3 +115,12 @@ INSERT INTO album_artist (artistid, albumid) VALUES
 (9, 6),
 (10, 7);
 
+-- Треки с my
+INSERT INTO track (title, duration, albumid) VALUES
+('myself', 200, 7),
+('by myself', 210, 7),
+('bemy self', 190, 7),
+('myself by', 205, 7),
+('by myself by', 215, 7),
+('beemy', 180, 7),
+('premyne', 220, 7);

@@ -7,7 +7,7 @@ where duration = (select max(duration) from track);
 -- Название треков, продолжительность которых не менее 3,5 минут
 select title, duration 
 from track 
-where duration >= 180;
+where duration >= 210; -- исправил с 180 на 210 сек
 
 -- Названия сборников, вышедших в период с 2018 по 2020 год включительно.
 select namecollection
@@ -22,7 +22,7 @@ where artistname not like '% %';
 -- Название треков, которые содержат слово «мой» или «my».
 select title
 from track
-where lower(title) like '%my%' or lower(title) like '%мой%';
+where title ilike 'my %' or title ilike '% my' or title ilike '% my %' or title ilike 'my'; -- изменил lower ... like на ilike и добавил условия учитывая позицию в строке('мой' не учитываю, так как нет русского наименования)
 
 -- Задание 3
 -- Количество исполнителей в каждом жанре.
@@ -48,12 +48,15 @@ from
 group by a.title;
 
 -- Все исполнители, которые не выпустили альбомы в 2020 году.
-select a.artistname
-from
-	artist a 
-	join album_artist aa on a.artistid = aa.artistid
-	join album a2 on aa.albumid = a2.albumid
-where a2.releaseyear <> 2020;
+select artistname
+from artist
+where artistname not in (											-- изменил условие как подзапрос
+				select a.artistname
+				from
+					artist a 
+					join album_artist aa on a.artistid = aa.artistid
+					join album a2 on aa.albumid = a2.albumid
+					where a2.releaseyear = 2020);
 
 -- Названия сборников, в которых присутствует конкретный исполнитель (выберите его сами).
 select distinct c.namecollection 
